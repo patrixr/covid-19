@@ -1,43 +1,42 @@
 <template>
   <div class="graph-container">
-    <vue-funnel-graph
-      :width="width"
-      :height="height"
-      :labels="labels"
-      :values="values"
-      :colors="colors"
-      :sub-labels="subLabels"
-      :direction="direction"
-      :gradient-direction="gradientDirection"
-      :animated="true"
-      :display-percentage="true"
-    ></vue-funnel-graph>
+    <apexchart width="800" type="area" :options="options.chartOptions" :series="series"></apexchart>
   </div>
 </template>
 
 <script>
-  import { VueFunnelGraph } from 'vue-funnel-graph-js';
+  import { reactive, computed, toRefs }  from "@vue/composition-api";
 
   export const CurvesChart = {
     name: 'navigation-bar',
-    components: { VueFunnelGraph },
-    props: ['labels', 'subLabels', 'values'],
-    setup() {
+    props: ['timestamps', 'series'],
+    setup(props) {
+      console.log(props.timestamps);
       return {
-        colors: [
-          ['#FFB178', '#FF3C8E'], // color set for "Impressions" segment
-          ['#A0BBFF', '#EC77FF'], // color set for "Add To Cart" segment
-          ['#A0F9FF', '#7795FF']  // color set for "Buy" segment
-        ],
-        direction: 'horizontal',
-        gradientDirection: 'horizontal',
-        height: 300,
-        width: 800
-      };
-    },
-    methods: {
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
+        options: {
+          chartOptions: {
+            chart: {
+              height: 400,
+              type: 'area',
+              stacked: true
+            },
+            dataLabels: {
+              enabled: false
+            },
+            stroke: {
+              curve: 'smooth'
+            },
+            xaxis: {
+              type: 'datetime',
+              categories: props.timestamps
+            },
+            tooltip: {
+              x: {
+                format: 'dd/MM/yy HH:mm'
+              },
+            },
+          }
+        }
       }
     }
   }

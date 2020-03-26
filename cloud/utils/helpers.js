@@ -17,7 +17,7 @@ function normalize(record) {
     .keys()
     .reduce((res, key) => {
       const val = record[key];
-      res[key] = numericString(val) ? parseNumber(val) : val;
+      res[key] = (numericString(val) ? parseNumber(val) : val) || 0
       return res;
     }, {})
     .value();

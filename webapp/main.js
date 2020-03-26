@@ -6,8 +6,11 @@ import locale               from 'element-ui/lib/locale/lang/en'
 import { library }          from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon }  from '@fortawesome/vue-fontawesome'
 import VueCompositionApi    from "@vue/composition-api";
+import VueApexCharts        from 'vue-apexcharts'
 
 Vue.use(VueCompositionApi);
+
+Vue.component('apexchart', VueApexCharts)
 
 import {
   faHeartbeat,

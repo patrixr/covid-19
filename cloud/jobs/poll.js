@@ -21,8 +21,8 @@ async function poll(type) {
   await save('history', historyPerCountry);
 
   for (let country of countries) {
-    const history = historyPerCountry[country];
-    const stats   = statsPerCountry[country];
+    const history = await historyPerCountry[country];
+    const stats   = await statsPerCountry[country];
 
     await save(`history/${country.toLowerCase()}`, history);
     await save(`stats/${country.toLowerCase()}`, stats);

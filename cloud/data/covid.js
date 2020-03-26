@@ -19,7 +19,8 @@ const HISTORY_FIELDS = [
   'new_deaths',
   'total_recovered',
   'serious_critical',
-  'total_cases_per1m'
+  'total_cases_per1m',
+  'record_date'
 ];
 
 const STAT_FIELDS = [
@@ -84,9 +85,9 @@ module.exports = cached({
 
       _.each(countryHistory, (record, idx) => {
         if (!world[idx]) {
-          world[idx] = { ...record };
+          world[idx] = _.pick(record, HISTORY_FIELDS)
         } else {
-          _.each(HISTORY_FIELDS, f => world[idx][f] += record[f]);
+          _.reject(HISTORY_FIELDS, (f) => f == 'record_date').forEach(f => world[idx][f] += record[f]);
         }
       });
 
