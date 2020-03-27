@@ -1,25 +1,50 @@
-import axios            from 'axios'
-import { cached }       from 'tronicache'
-import { API_ENDPOINT } from '../config'
+import _          from 'lodash';
+import { cache }  from '../utils/cache';
+import {
+  confirmed_cases,
+  deaths,
+  recoveries
+} from '../../data/series.json';
 
-export default cached({
-  cache: true,
-  timeout:  30 * 60 * 1000,
+const ALL = 'World';
 
-  async countries() {
-    return this.uncached.get('/countries');
-  },
+export const { timestamps }  = confirmed_cases[ALL];
 
-  async history() {
-    return this.uncached.get('/history');
-  },
+const ZEROES = timestamps.map(() => 0);
 
-  uncached: {
-    cache: false,
+export const countries = () => {
+  return _.keys(confirmed_cases);
+}
 
-    async get(endpoint) {
-      const { data } = await axios.get(API_ENDPOINT + endpoint);
-      return data
-    }
-  }
+export const confirmedCasesOf = (country = ALL) => {
+  return _.get(confirmed_cases, `${country}.values`, ZEROES);
+}
+
+export const deathsOf = (country = ALL) => {
+  return _.get(deaths, `${country}.values`, ZEROES);
+}
+
+export const recoveriesOf = (country = ALL) => {
+  return _.get(recoveries, `${country}.values`, ZEROES);
+}
+
+export const activeCasesOf = cache((country = ALL) => {
+  return confirmedCasesOf(country).map((val, idx) => {
+    return val - recoveriesOf(country)[idx] - deathsOf(country)[idx];
+  });
 });
+
+export const timelineData = (country = ALL)  => {
+  const series = [{
+    name: 'Active Cases',
+    data: activeCasesOf(country),
+  }, {
+    name: 'Recoveries',
+    data: recoveriesOf(country)
+  }, {
+    name: 'Deaths',
+    data: deathsOf(country)
+  }];
+
+  return { series, timestamps };
+}

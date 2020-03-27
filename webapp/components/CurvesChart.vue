@@ -1,6 +1,6 @@
 <template>
   <div class="graph-container">
-    <apexchart width="800" type="area" :options="options.chartOptions" :series="series"></apexchart>
+    <apexchart width="800" height="400" type="area" :options="options.chartOptions" :series="series"></apexchart>
   </div>
 </template>
 
@@ -11,14 +11,28 @@
     name: 'navigation-bar',
     props: ['timestamps', 'series'],
     setup(props) {
-      console.log(props.timestamps);
       return {
         options: {
           chartOptions: {
             chart: {
-              height: 400,
+              foreColor: "#526BA3",
               type: 'area',
-              stacked: true
+              stacked: true,
+              toolbar: {
+                autoSelected: "pan",
+                show: false
+              }
+            },
+            theme: {
+              mode: 'light', 
+              palette: 'palette1'
+            },
+            legend: {
+              position: 'top'
+            },
+            grid: {
+              borderColor: "#ABD5FF",
+              clipMarkers: true
             },
             dataLabels: {
               enabled: false
@@ -32,7 +46,7 @@
             },
             tooltip: {
               x: {
-                format: 'dd/MM/yy HH:mm'
+                format: 'dd/MM/yy'
               },
             },
           }
@@ -44,12 +58,8 @@
   export default CurvesChart
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
   .graph-container {
     position: relative;
-    width: 800px;
-    height: 400px;
-    overflow: hidden;
-    margin-top: 3rem;
   }
 </style>

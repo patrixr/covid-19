@@ -1,5 +1,6 @@
 dist/
 .cache/
+data/*.json
 
 # Logs
 logs

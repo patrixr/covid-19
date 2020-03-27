@@ -23,7 +23,7 @@ import {
   faRoute
 } from '@fortawesome/free-solid-svg-icons'
 
-import 'element-ui/lib/theme-chalk/index.css'
+import './styles/theme/index.css';
 import './styles/animate.css';
 import './styles/main.scss';
 import './filters'
