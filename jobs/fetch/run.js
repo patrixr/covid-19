@@ -13,7 +13,7 @@ const {
 
 const write = (v) => process.stdout.write(v);
 
-const REPO = 'git@github.com:CSSEGISandData/COVID-19.git'
+const REPO = 'https://github.com/CSSEGISandData/COVID-19.git'
 
 console.log(chalk.blueBright(':Pulling data'));
 
