@@ -13,7 +13,6 @@ Vue.use(VueCompositionApi);
 Vue.component('apexchart', VueApexCharts)
 
 import {
-  so,
   faWeight,
   faPercent,
   faChartBar,
