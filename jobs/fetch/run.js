@@ -1,12 +1,12 @@
 // @ts-nocheck
 
-const tmp   = require('tmp');
 const path  = require('path');
 const fs    = require('fs');
 const chalk = require('chalk');
 const _     = require('lodash');
 const git   = require('simple-git/promise')();
 const csv   = require('csvtojson');
+const { execSync } = require("child_process");
 const {
   normalize
 } = require('./normalize');
@@ -39,8 +39,8 @@ const FILES = {
 
 (async function () {
 
-  const tmpFolder   = tmp.dirSync();
-  const repoFolder  = path.join(tmpFolder.name, `tmp-repo`);
+  const dataFolder   = path.join(__dirname, '../../data');
+  const repoFolder  = path.join(dataFolder, `tmp-repo`);
 
   await step('Cloning', git.clone(REPO, repoFolder));
 
@@ -52,6 +52,8 @@ const FILES = {
 
   const asString = /prod/.test(process.env.NODE_ENV) ? JSON.stringify(data) : JSON.stringify(data, null, 2);
 
-  step('Saving', fs.writeFileSync(path.join(__dirname, '../../data/series.json'), asString));
+  step('Saving', fs.writeFileSync(path.join(dataFolder, 'series.json'), asString));
+
+  execSync(`rm -rf ${repoFolder}`);
 
 })();
