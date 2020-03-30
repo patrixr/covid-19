@@ -1,8 +1,13 @@
 const _     = require('lodash');
 const dayjs = require('dayjs');
 
-function isDateKey(key) {
-  return /^\d+\/\d+\/\d+$/.test(key);
+function isDataKey(key) {
+  return /^\d+\/\d+\/\d+$/.test(key) || _.includes([
+    'Confirmed',
+    'Deaths',
+    'Recovered',
+    'Active'
+  ], key);
 }
 
 function toNum(n) {
@@ -10,7 +15,7 @@ function toNum(n) {
 
 }
 
-function toTimeSeries(countries) {
+function normalizeSeries(countries) {
   return _.mapValues(countries, (record) => {
     const values      = [];
     const timestamps  = [];
@@ -27,22 +32,28 @@ function toTimeSeries(countries) {
 }
 
 function toCountry(row) {
-  const province = row['Province/State'];
+  const province = row['Province/State'] || row['Province_State'];
 
   if (_.includes(['Hong Kong', 'Macau'], province)) {
     return province;
   }
 
-  return row['Country/Region']
+  const country = row['Country/Region'] || row['Country_Region'];
+
+  if (/China/.test(country)) {
+    return 'China';
+  }
+
+  return country;
 }
 
-function normalize(data) {
+function perCountry(data) {
   const countries = _.reduce(data, (res, row) => {
     const country     = toCountry(row);
     const countryData = res[country] || {};
 
     _.keys(row)
-      .filter(isDateKey)
+      .filter(isDataKey)
       .forEach(key => countryData[key] = (countryData[key] || 0) + toNum(row[key]));
 
     res[country] = countryData;
@@ -55,7 +66,11 @@ function normalize(data) {
     return world;
   }, {});
 
-  return toTimeSeries(countries);
+  return countries;
 }
 
-module.exports = { normalize, isDateKey }
+function toTimeSeries(data) {
+  return normalizeSeries(perCountry(data));
+}
+
+module.exports = { toTimeSeries, perCountry }

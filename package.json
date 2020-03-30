@@ -6,9 +6,9 @@
   "scripts": {
     "poll": "node jobs/fetch/run.js",
     "server": "DEBUG=* node cloud/server/index.js",
-    "prebuild": "npm run poll",
+    "prebuild": "NODE_ENV=production npm run poll",
     "postinstall": "npm run poll",
-    "build": "parcel build webapp/index.html --out-dir dist",
+    "build": "NODE_ENV=production parcel build webapp/index.html --out-dir dist",
     "dev": "parcel serve webapp/index.html"
   },
   "keywords": [

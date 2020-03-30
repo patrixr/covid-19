@@ -13,14 +13,8 @@ Vue.use(VueCompositionApi);
 Vue.component('apexchart', VueApexCharts)
 
 import {
-  faHeartbeat,
-  faWeight,
-  faPercent,
-  faChartBar,
-  faShoePrints,
-  faBurn,
-  faRunning,
-  faRoute
+  faChartLine,
+  faSortAmountDown
 } from '@fortawesome/free-solid-svg-icons'
 
 import './styles/theme/index.css';
@@ -35,7 +29,7 @@ Vue.use(VueCompositionApi);
 Vue.use(ElementUI, { locale });
 
 // --> Font aweomse
-library.add(faHeartbeat, faWeight, faPercent, faChartBar, faShoePrints, faBurn, faRunning, faRoute);
+library.add(faChartLine, faSortAmountDown);
 Vue.component('fa-icon', FontAwesomeIcon);
 
 new Vue({

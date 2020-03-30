@@ -1,10 +1,11 @@
-import _          from 'lodash';
-import { cache }  from '../utils/cache';
+import _          from 'lodash'
+import { cache }  from '../utils/cache'
+import dailyData  from '../../data/daily.json'
 import {
   confirmed_cases,
   deaths,
   recoveries
-} from '../../data/series.json';
+} from '../../data/series.json'
 
 const ALL = 'World';
 
@@ -34,6 +35,17 @@ export const activeCasesOf = cache((country = ALL) => {
   });
 });
 
+export const latestChanges = cache(() => {
+  const latestDaily = dailyData[dailyData.length - 1].data;
+  const secondLastestDaily = dailyData[dailyData.length - 2].data;
+
+  return _.mapValues(latestDaily, (countryData, country) => {
+    return _.mapValues(countryData, (val, key) => {
+      return val - _.get(secondLastestDaily, `${country}.${key}`,  0);
+    });
+  });
+});
+
 export const timelineData = (country = ALL)  => {
   const series = [{
     name: 'Active Cases',
@@ -48,3 +60,18 @@ export const timelineData = (country = ALL)  => {
 
   return { series, timestamps };
 }
+
+export const latestStats = () => {
+  return _.reduce(countries(), (table, country) => {
+    table.push({
+      country: country,
+      confirmed: _.last(confirmedCasesOf(country)),
+      recoveries: _.last(recoveriesOf(country)),
+      deaths: _.last(deathsOf(country)),
+      newCases: latestChanges()[country]['Confirmed'],
+      newDeaths: latestChanges()[country]['Deaths'],
+    });
+    return table;
+  }, []);
+
+};

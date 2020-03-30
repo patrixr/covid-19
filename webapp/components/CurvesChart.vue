@@ -1,6 +1,6 @@
 <template>
   <div class="graph-container">
-    <apexchart width="800" height="400" type="area" :options="options.chartOptions" :series="series"></apexchart>
+    <apexchart :width="width" height="400" type="area" :options="options.chartOptions" :series="series"></apexchart>
   </div>
 </template>
 
@@ -12,6 +12,7 @@
     props: ['timestamps', 'series'],
     setup(props) {
       return {
+        width: (window.outerWidth > 800 ? 800 : window.outerWidth) * 0.85,
         options: {
           chartOptions: {
             chart: {
