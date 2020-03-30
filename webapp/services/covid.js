@@ -11,6 +11,8 @@ const ALL = 'World';
 
 export const { timestamps }  = confirmed_cases[ALL];
 
+export const recordDate = _.last(timestamps);
+
 const ZEROES = timestamps.map(() => 0);
 
 export const countries = () => {
@@ -73,5 +75,8 @@ export const latestStats = () => {
     });
     return table;
   }, []);
-
 };
+
+export const worldStats = () => {
+  return _.find(latestStats(), ['country', 'World']);
+}

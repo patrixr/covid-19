@@ -13,6 +13,10 @@ Vue.filter("truncateFloat", (num) => {
   return num.toFixed(1);
 });
 
+Vue.filter("prettyNumber", (num) => {
+  return Number(num).toLocaleString();
+});
+
 Vue.filter("truncateSeconds", (time) => {
   if (/^\d\d:\d\d:\d\d$/.test(time)) {
     return time.replace(/:\d\d$/, '');
