@@ -70,8 +70,8 @@ export const latestStats = () => {
       confirmed: _.last(confirmedCasesOf(country)),
       recoveries: _.last(recoveriesOf(country)),
       deaths: _.last(deathsOf(country)),
-      newCases: latestChanges()[country]['Confirmed'],
-      newDeaths: latestChanges()[country]['Deaths'],
+      newCases: _.get(latestChanges(), `${country}.Confirmed`, 0),
+      newDeaths: _.get(latestChanges(), `${country}.Deaths`, 0),
     });
     return table;
   }, []);

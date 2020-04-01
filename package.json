@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "poll": "node jobs/fetch/run.js",
-    "server": "DEBUG=* node cloud/server/index.js",
     "prebuild": "NODE_ENV=production npm run poll",
     "postinstall": "npm run poll",
     "build": "NODE_ENV=production parcel build webapp/index.html --out-dir dist",
